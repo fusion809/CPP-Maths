@@ -34,10 +34,10 @@ std::vector<double> simpPen(double g, double l, double t, double theta, double t
  */
 class solClass {
     public:
-        int i; /**< The number of elements each contained vector */
-        std::vector<double> t; /**< Array of t values. */
-        std::vector<double> theta; /**< Array of theta values. */
-        std::vector<double> thetaDot; /**< Array of thetaDot values. */
+        int i; /**< The number of elements contained within the vectors below */
+        std::vector<double> t; /**< Vector of t values. */
+        std::vector<double> theta; /**< Vector of theta values. */
+        std::vector<double> thetaDot; /**< Vector of theta dot values. */
 };
 
 /**
