@@ -16,8 +16,9 @@ namespace plt = matplotlibcpp;
 /**
  * Find the RHS of the ODE expressed as a system of first-order equations.
  *
- * @param g        Acceleration due to gravity in metres per second squared.
- * @param l        Length of the pendulum rod in metres.
+ * @param sigma    Problem parameter.
+ * @param rho      Problem parameter.
+ * @param beta     Problem parameter.
  * @param t        Time value. Largely included for the sake of generality, not actually used.
  * @param x        x in the Lorenz system.
  * @param y        y in the Lorenz system.
@@ -53,7 +54,7 @@ class solClass {
  * @param sigma         Problem parameter.
  * @param rho           Problem parameter.
  * @param beta          Problem parameter.
- * @param t0            Starting time of the simulation.
+ * @param t0            Start time of the simulation.
  * @param tf            End time of the simulation.
  * @param x0            Initial x value.
  * @param y0            Initial y value.

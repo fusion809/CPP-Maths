@@ -80,7 +80,7 @@ double periodCalc(double g, double l, int N, double theta0, double thetaDot0) {
  * @param epsilon       Error tolerance.
  * @param g             Acceleration due to gravity in metres per second squared.
  * @param l             Length of the pendulum rod in metres.
- * @param t0            Starting time of the simulation.
+ * @param t0            Start time of the simulation.
  * @param tf            End time of the simulation.
  * @param theta0        Initial angle from the positive x-axis in radians.
  * @param thetaDot0     Rate of change of theta with respect to time at t0.
