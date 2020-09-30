@@ -198,9 +198,36 @@ int main() {
     // Plot using matplotlibcpp
     // You will get linting errors for plt::plot, but no build errors if your
     // matplotlibcpp package is installed and set up properly
-    //plt::figure(1);
+    plt::figure(2);
+    plt::named_plot("x", t, x, "r");
+    plt::named_plot("y", t, y, "g");
+    plt::named_plot("z", t, z, "c");
+    plt::xlabel("t");
+    plt::ylabel("x, y or z");
+    plt::legend();
+    plt::save("x, y and z against time plot.svg");
+    plt::figure(3);
+    plt::plot(x, y);
+    plt::xlabel("x");
+    plt::ylabel("y");
+    plt::save("y against x phase plot.svg");
+    plt::figure(4);
+    plt::plot(y, z);
+    plt::xlabel("y");
+    plt::ylabel("z");
+    plt::save("z against y phase plot.svg");
+    plt::figure(5);
+    plt::plot(x, z);
+    plt::xlabel("x");
+    plt::ylabel("z");
+    plt::save("z against x phase plot.svg");
+    plt::figure(6);
     plt::plot3(x, y, z);
-    // plt::save("Lorenz 3D phase plot.svg");
-    plt::show();
+    plt::xlabel("x");
+    plt::ylabel("y");
+    plt::set_zlabel("z");
+    plt::title("Lorenz attractor");
+    plt::save("Lorenz 3D phase plot.svg");
+    //plt::show();
     return 0;
 }
