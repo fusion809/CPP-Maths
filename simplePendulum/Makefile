@@ -6,6 +6,8 @@ all:
 	./RKF45.o
 clean:
 	rm RKF45.o
-docs:
+build-docs:
 	@doxygen ./Doxyfile
+docs:
+	make build-docs
 	google-chrome-stable ./html/index.html
