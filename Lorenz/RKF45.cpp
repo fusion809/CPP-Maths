@@ -37,11 +37,11 @@ std::vector<double> Lorenz(double sigma, double rho, double beta, double t, doub
  */
 class solClass {
     public:
-        int i; /**< The number of elements each contained vector */
-        std::vector<double> t; /**< Array of t values. */
-        std::vector<double> x; /**< Array of x values. */
-        std::vector<double> y; /**< Array of y values. */
-        std::vector<double> z; /**< Array of z values. */
+        int i; /**< The number of elements within each contained vector. */
+        std::vector<double> t; /**< Vector of t values. */
+        std::vector<double> x; /**< Vector of x values. */
+        std::vector<double> y; /**< Vector of y values. */
+        std::vector<double> z; /**< Vector of z values. */
 };
 
 /**
