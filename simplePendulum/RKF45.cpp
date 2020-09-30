@@ -223,5 +223,5 @@ int main() {
     plt::ylabel("thetaDot");
     plt::title("Phase plot");
     plt::save("Phase plot of thetaDot against theta.svg");
-    return 0;
+    return 1;
 }
