@@ -34,10 +34,10 @@ std::vector<double> deriv(double g, double l, double t, double theta, double the
  */
 class solClass {
     public:
-        int i;
-        std::vector<double> t;
-        std::vector<double> theta;
-        std::vector<double> thetaDot;
+        int i; /**< The number of elements each contained vector */
+        std::vector<double> t; /**< Array of t values. */
+        std::vector<double> theta; /**< Array of theta values. */
+        std::vector<double> thetaDot; /**< Array of thetaDot values. */
 };
 
 /**
@@ -160,6 +160,9 @@ solClass RKF45(std::vector<double>(*f)(double, double, double, double, double, d
     return solution;
 }
 
+/**
+ * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
+ */
 int main() {
     // Initialize relevant variables
     int N = 1e3;
@@ -202,11 +205,23 @@ int main() {
     // Plot using matplotlibcpp
     // You will get linting errors for plt::plot, but no build errors if your
     // matplotlibcpp package is installed and set up properly
-    // The following is commented out not because it doesn't work, but because it causes the program to hang.
-    // plt::figure(1);
-    // plt::plot(t, theta);
-    // plt::figure(2);
-    // plt::plot(t, thetaDot);
-    // plt::show();
+    plt::figure(1);
+    plt::plot(t, theta);
+    plt::xlabel("t");
+    plt::ylabel("theta");
+    plt::title("theta against time");
+    plt::save("theta against t.svg");
+    plt::figure(2);
+    plt::plot(t, thetaDot);
+    plt::xlabel("t");
+    plt::ylabel("thetaDot");
+    plt::title("thetaDot against time");
+    plt::save("thetaDot against t.svg");
+    plt::figure(3);
+    plt::plot(theta, thetaDot);
+    plt::xlabel("theta");
+    plt::ylabel("thetaDot");
+    plt::title("Phase plot");
+    plt::save("Phase plot of thetaDot against theta.svg");
     return 0;
 }
