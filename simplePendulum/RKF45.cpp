@@ -22,9 +22,9 @@ namespace plt = matplotlibcpp;
  * @param theta    Angle from the positive x-axis (positive values = above the x-axis).
  * @param thetaDot Rate of change of theta with respect to time.
  * @param dt       Step size.
- * @return         dt * {theta dot, theta double dot}
+ * @return         vector of dtheta, dthetaDot
  */
-std::vector<double> deriv(double g, double l, double t, double theta, double thetaDot, double dt) {
+std::vector<double> simpPen(double g, double l, double t, double theta, double thetaDot, double dt) {
     double thetaDDot = -g/l * cos(theta);
     return {dt*thetaDot, dt*thetaDDot};
 }
@@ -176,7 +176,7 @@ int main() {
     double tf = t0 + 4*periodCalc(g, l, N, theta0, thetaDot0);
 
     // Solve problem
-    solClass solution = RKF45(deriv, dtInitial, epsilon, g, l, t0, tf, theta0, thetaDot0);
+    solClass solution = RKF45(simpPen, dtInitial, epsilon, g, l, t0, tf, theta0, thetaDot0);
     int k = solution.i;
     std::vector<double> t = solution.t;
     std::vector<double> theta = solution.theta;

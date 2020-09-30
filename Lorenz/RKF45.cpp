@@ -22,9 +22,9 @@ namespace plt = matplotlibcpp;
  * @param x    Angle from the positive x-axis (positive values = above the x-axis).
  * @param y Rate of change of x with respect to time.
  * @param dt       Step size.
- * @return         dt * {x dot, x double dot}
+ * @return         vector of dx, dy, dz
  */
-std::vector<double> deriv(double sigma, double rho, double beta, double t, double x, double y, double z, double dt) {
+std::vector<double> Lorenz(double sigma, double rho, double beta, double t, double x, double y, double z, double dt) {
     double dx = dt*sigma*(y-x);
     double dy = dt*(x*(rho-z)-y);
     double dz = dt*(x*y - beta*z);
@@ -164,7 +164,7 @@ int main() {
     double tf = 100;
 
     // Solve problem
-    solClass solution = RKF45(deriv, dtInitial, epsilon, sigma, rho, beta, t0, tf, x0, y0, z0);
+    solClass solution = RKF45(Lorenz, dtInitial, epsilon, sigma, rho, beta, t0, tf, x0, y0, z0);
     int k = solution.i;
     std::vector<double> t = solution.t;
     std::vector<double> x = solution.x;
@@ -196,8 +196,9 @@ int main() {
     // Plot using matplotlibcpp
     // You will get linting errors for plt::plot, but no build errors if your
     // matplotlibcpp package is installed and set up properly
-    plt::figure(1);
+    //plt::figure(1);
     plt::plot3(x, y, z);
+    // plt::save("Lorenz 3D phase plot.svg");
     plt::show();
     return 0;
 }
