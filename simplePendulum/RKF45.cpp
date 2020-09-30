@@ -182,10 +182,12 @@ int main() {
     // Write to file
     ofstream myfile;
     myfile.open("RKF45.txt");
+    // Headings
     myfile << "i" << std::string(1 + (int)log10(k), ' ');
     myfile << "t" << std::string(19, ' ');
     myfile << "theta" << std::string(17, ' ');
     myfile << "thetaDot" << "\n";
+    // Contents
     for (int i = 0 ; i < k; i++) {
         if (i == 0) {
             myfile << i << std::string(1 + (int)log10(k), ' ');
@@ -200,10 +202,11 @@ int main() {
     // Plot using matplotlibcpp
     // You will get linting errors for plt::plot, but no build errors if your
     // matplotlibcpp package is installed and set up properly
-    plt::figure(1);
-    plt::plot(t, theta);
-    plt::figure(2);
-    plt::plot(t, thetaDot);
-    plt::show();
+    // The following is commented out not because it doesn't work, but because it causes the program to hang.
+    // plt::figure(1);
+    // plt::plot(t, theta);
+    // plt::figure(2);
+    // plt::plot(t, thetaDot);
+    // plt::show();
     return 0;
 }
