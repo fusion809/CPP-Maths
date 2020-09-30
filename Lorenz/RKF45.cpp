@@ -19,8 +19,9 @@ namespace plt = matplotlibcpp;
  * @param g        Acceleration due to gravity in metres per second squared.
  * @param l        Length of the pendulum rod in metres.
  * @param t        Time value. Largely included for the sake of generality, not actually used.
- * @param x    Angle from the positive x-axis (positive values = above the x-axis).
- * @param y Rate of change of x with respect to time.
+ * @param x        x in the Lorenz system.
+ * @param y        y in the Lorenz system.
+ * @param z        z in the Lorenz system.
  * @param dt       Step size.
  * @return         vector of dx, dy, dz
  */
