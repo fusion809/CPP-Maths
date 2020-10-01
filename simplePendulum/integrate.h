@@ -13,6 +13,7 @@
  * @return         Approximated value of the integral of f from a to b.
  */
 double chebGaussQuad(double a, double b, double N, std::vector<double> params, double(*f)(double, std::vector<double> params)) {
+    // Initialize variables
     double nodes = 0;
     double integrand = 0;
     double transformedGrid = 0;
@@ -26,6 +27,6 @@ double chebGaussQuad(double a, double b, double N, std::vector<double> params, d
         integral += ((b-a)/2.0) * (M_PI/N) * integrand;
     }
 
-    // Calculate period as double the integral from thetaMin to thetaMax
+    // Return integral
     return integral;
 }
