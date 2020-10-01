@@ -6,10 +6,12 @@
 #include <utility>
 #include <unistd.h>
 #include <algorithm>
+#include <bits/stdc++.h>
 // Required for setprecision
 #include <iomanip>
 // From matplotlib-cpp-git AUR package
 #include <matplotlib-cpp/matplotlibcpp.h>
+#include <integrate.h>
 using namespace std;
 namespace plt = matplotlibcpp;
 
@@ -41,6 +43,24 @@ class solClass {
 };
 
 /**
+ * Calculate the inverse of the time derivative of theta.
+ * 
+ * @param theta    Angle from the positive x-axis.
+ * @param params   A vector containing all parameters of the problem, namely:
+ * g, l, theta0 and thetaDot0.
+ * @return         1/thetaDot.
+ */
+double invThetaDot(double theta, std::vector<double> params) {
+    // Extract parameters. 
+    double g = params[0];
+    double l = params[1];
+    double theta0 = params[2];
+    double thetaDot0 = params[3];
+
+    return 1/sqrt(pow(thetaDot0, 2.0) + 2*g/l * (sin(theta0)-sin(theta)));
+}
+
+/**
  * Calculate the period of the problem.
  *
  * @param g             Acceleration due to gravity in metres per second squared.
@@ -52,23 +72,11 @@ class solClass {
  */
 double periodCalc(double g, double l, int N, double theta0, double thetaDot0) {
     // Initialize relevant variables
-    double thetaMin = asin((pow(thetaDot0,2.0) + 2.0*(g/l)*sin(theta0))/(2*g/l));
+    double thetaMin = asin((pow(thetaDot0,2.0) + 2.0*(g/l)*sin(theta0))/(2.0*g/l));
     double thetaMax = -thetaMin - M_PI;
-    double nodes = 0;
-    double integrand = 0;
-    double transformedGrid = 0;
-    double integral = 0;
-
-    // Loop over each node
-    for (int i = 1; i < N +1 ; i++) {
-        nodes = cos((2.0*i-1.0)*M_PI/(2.0*N));
-        transformedGrid = (thetaMax-thetaMin)*nodes/2.0 + (thetaMax + thetaMin)/2.0;
-        integrand = sqrt(1-pow(nodes, 2.0))*pow(pow(thetaDot0, 2.0)+2.0*g/l * (sin(theta0)-sin(transformedGrid)), -0.5);
-        integral += ((thetaMax-thetaMin)/2.0) * (M_PI/N) * integrand;
-    }
-
-    // Calculate period as double the integral from thetaMin to thetaMax
-    double period = 2.0*abs(integral);
+    std::vector<double> params = {g, l, theta0, thetaDot0};
+    double integral = chebGaussQuad(thetaMin, thetaMax, N, params, invThetaDot);
+    double period = 2*std::abs(integral);
     return period;
 }
 
@@ -174,13 +182,13 @@ int main() {
     double dtInitial = 0.1;
     double t0 = 0;
     double tf = t0 + 4*periodCalc(g, l, N, theta0, thetaDot0);
-
     // Solve problem
     solClass solution = RKF45(simpPen, dtInitial, epsilon, g, l, t0, tf, theta0, thetaDot0);
     int k = solution.i;
     std::vector<double> t = solution.t;
     std::vector<double> theta = solution.theta;
     std::vector<double> thetaDot = solution.thetaDot;
+    double minTheta = *std::min_element(theta.begin(),theta.end());
 
     // Write to file
     ofstream myfile;
@@ -209,7 +217,9 @@ int main() {
     plt::plot(t, theta);
     plt::xlabel("t");
     plt::ylabel("theta");
-    plt::title("theta against time");
+    string figure1Title;
+    figure1Title = "theta against time; min(theta): " + to_string(minTheta);
+    plt::title(figure1Title);
     plt::save("theta against t.svg");
     plt::figure(2);
     plt::plot(t, thetaDot);
