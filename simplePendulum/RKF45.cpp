@@ -213,25 +213,25 @@ int main() {
     // Plot using matplotlibcpp
     // You will get linting errors for plt::plot, but no build errors if your
     // matplotlibcpp package is installed and set up properly
-    plt::figure(1);
-    plt::plot(t, theta);
-    plt::xlabel("t");
-    plt::ylabel("theta");
-    string figure1Title;
-    figure1Title = "theta against time; min(theta): " + to_string(minTheta);
-    plt::title(figure1Title);
-    plt::save("theta against t.svg");
-    plt::figure(2);
-    plt::plot(t, thetaDot);
-    plt::xlabel("t");
-    plt::ylabel("thetaDot");
-    plt::title("thetaDot against time");
-    plt::save("thetaDot against t.svg");
-    plt::figure(3);
-    plt::plot(theta, thetaDot);
-    plt::xlabel("theta");
-    plt::ylabel("thetaDot");
-    plt::title("Phase plot");
-    plt::save("Phase plot of thetaDot against theta.svg");
+    // plt::figure(1);
+    // plt::plot(t, theta);
+    // plt::xlabel("t");
+    // plt::ylabel("theta");
+    // string figure1Title;
+    // figure1Title = "theta against time; min(theta): " + to_string(minTheta);
+    // plt::title(figure1Title);
+    // plt::save("theta against t.svg");
+    // plt::figure(2);
+    // plt::plot(t, thetaDot);
+    // plt::xlabel("t");
+    // plt::ylabel("thetaDot");
+    // plt::title("thetaDot against time");
+    // plt::save("thetaDot against t.svg");
+    // plt::figure(3);
+    // plt::plot(theta, thetaDot);
+    // plt::xlabel("theta");
+    // plt::ylabel("thetaDot");
+    // plt::title("Phase plot");
+    // plt::save("Phase plot of thetaDot against theta.svg");
     return 1;
 }

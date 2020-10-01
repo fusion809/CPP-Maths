@@ -29,4 +29,37 @@ double chebGaussQuad(double a, double b, double N, std::vector<double> params, d
 
     // Return integral
     return integral;
-}
+};
+
+/**
+ * @brief Uses Simpson's rule with N steps to integrate f(x, param)
+ * 
+ * @param a        Start of the domain of integration.
+ * @param b        End of the domain of integration.
+ * @param N        Step number.
+ * @param params   A vector containing all parameters for function f.
+ * @param f        A funcction of x and params. 
+ * @return         The integral of f(x, param) from a to b.
+ */
+double simpsons(double a, double b, int N, std::vector<double> params, double(*f)(double, std::vector<double>)) {
+    // Step size
+    if (N % 2 == 1) {
+        return 0;
+    }
+    double step = (b-a)/N;
+    double grid = a;
+    double integral = 0;
+
+    for (int i = 0; i <= N ; i++) {
+        if ( ( i == 0 ) || (i == N) ) {
+            integral += (step/3) * f(grid, params);
+        } else if ( (i - 1) % 2 == 0) {
+            integral += (2*step/3) * f(grid, params);
+        } else {
+            integral += (4*step/3) * f(grid, params);
+        }
+        grid += step;
+    }
+
+    return integral;
+};
