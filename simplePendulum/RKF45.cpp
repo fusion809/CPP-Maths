@@ -151,11 +151,9 @@ solClass RKF45(std::vector<double>(*f)(double, double, double, double, double, d
             t.push_back(t[i]+dt);
             theta.push_back(theta1);
             thetaDot.push_back(thetaDot1);
-            dt *= s;
             i++;
-        } else {
-            dt *= s;
         }
+        dt *= s;
     }
 
     // Write solution values to solClass object
@@ -189,6 +187,8 @@ int main() {
     std::vector<double> theta = solution.theta;
     std::vector<double> thetaDot = solution.thetaDot;
     double minTheta = *std::min_element(theta.begin(),theta.end());
+    double minThetaDot = *std::min_element(thetaDot.begin(),thetaDot.end());
+    double maxThetaDot = *std::max_element(thetaDot.begin(),thetaDot.end());
 
     // Write to file
     ofstream myfile;
@@ -213,25 +213,28 @@ int main() {
     // Plot using matplotlibcpp
     // You will get linting errors for plt::plot, but no build errors if your
     // matplotlibcpp package is installed and set up properly
-    // plt::figure(1);
-    // plt::plot(t, theta);
-    // plt::xlabel("t");
-    // plt::ylabel("theta");
-    // string figure1Title;
-    // figure1Title = "theta against time; min(theta): " + to_string(minTheta);
-    // plt::title(figure1Title);
-    // plt::save("theta against t.svg");
-    // plt::figure(2);
-    // plt::plot(t, thetaDot);
-    // plt::xlabel("t");
-    // plt::ylabel("thetaDot");
-    // plt::title("thetaDot against time");
-    // plt::save("thetaDot against t.svg");
-    // plt::figure(3);
-    // plt::plot(theta, thetaDot);
-    // plt::xlabel("theta");
-    // plt::ylabel("thetaDot");
-    // plt::title("Phase plot");
-    // plt::save("Phase plot of thetaDot against theta.svg");
+    plt::figure(1);
+    plt::plot(t, theta);
+    plt::xlabel("t");
+    plt::ylabel("theta");
+    string figure1Title;
+    figure1Title = "theta against time; min(theta): " + to_string(minTheta);
+    plt::title(figure1Title);
+    plt::save("theta against t.svg");
+    plt::figure(2);
+    plt::plot(t, thetaDot);
+    plt::xlabel("t");
+    plt::ylabel("thetaDot");
+    string figure2Title;
+    figure2Title = "thetaDot against time; min(thetaDot): " + to_string(minThetaDot);
+    figure2Title += ". max(thetaDot): " + to_string(maxThetaDot) + ".";
+    plt::title(figure2Title);
+    plt::save("thetaDot against t.svg");
+    plt::figure(3);
+    plt::plot(theta, thetaDot);
+    plt::xlabel("theta");
+    plt::ylabel("thetaDot");
+    plt::title("Phase plot");
+    plt::save("Phase plot of thetaDot against theta.svg");
     return 1;
 }

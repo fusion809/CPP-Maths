@@ -131,11 +131,9 @@ solClass RKF45(std::vector<double>(*f)(double, double, double, double, double, d
             x.push_back(x1);
             y.push_back(y1);
             z.push_back(z1);
-            dt *= s;
             i++;
-        } else {
-            dt *= s;
         }
+        dt *= s;
     }
 
     // Write solution values to solClass object
