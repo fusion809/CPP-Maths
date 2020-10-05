@@ -9,13 +9,21 @@
  * @param dt       Step size.
  * @return         vector of dtheta, dthetaDot
  */
-std::vector<double> simpPen(std::vector<double> params, double t, std::vector<double> vars, double dt) {
-    double g = params[0];
-    double l = params[1];
-    double theta = vars[0];
-    double thetaDot = vars[1];
-    double thetaDDot = -g/l * cos(theta);
-    return {dt*thetaDot, dt*thetaDDot};
+std::vector<double> SIR(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+    double beta = params[0];
+    double gamma = params[1];
+    double delta = params[2];
+    double N = params[3];
+
+    double S = vars[0];
+    double I = vars[1];
+    double R = vars[2];
+
+    double dSdt = -beta*I*(1-delta)*S/N;
+    double dIdt = beta*I*(1-delta)*S/N - gamma*I;
+    double dRdt = gamma*I;
+
+    return {dSdt*dt, dIdt*dt, dRdt*dt};
 }
 
 /**
@@ -24,30 +32,35 @@ std::vector<double> simpPen(std::vector<double> params, double t, std::vector<do
 int main() {
     // Initialize relevant variables
     double epsilon = 1e-11;
-    double theta0 = 0;
-    double thetaDot0 = 0;
-    double g = 9.81;
-    double l = 1.0;
-    std::vector<double> params = {g, l};
+    double S0 = 89.0;
+    double I0 = 11.0;
+    double R0 = 0.0;
+    double beta = 1.5;
+    double gamma = 0.25;
+    double delta = 0.5;
+    double N = S0 + I0 + R0;
+    std::vector<double> params = {beta, gamma, delta, N};
     double dtInitial = 0.1;
     double t0 = 0;
-    double tf = 10;
+    double tf = 98;
     // Solve problem
-    solClass solution = RKF45(simpPen, dtInitial, epsilon, params, t0, tf, {theta0, thetaDot0});
+    solClass solution = RKF45(SIR, dtInitial, epsilon, params, t0, tf, {S0, I0, R0});
     std::vector<double> t = solution.t;
     int k = t.size();
     std::vector<std::vector<double>> vars = solution.vars;
-    std::vector<double> theta = vars[0];
-    std::vector<double> thetaDot = vars[1];
+    std::vector<double> S = vars[0];
+    std::vector<double> I = vars[1];
+    std::vector<double> R = vars[2];
 
     // Write to file
     ofstream myfile;
-    myfile.open("simplePendulum.txt");
+    myfile.open("SIR.txt");
     // Headings
     myfile << "i" << std::string(1 + (int)log10(k), ' ');
     myfile << "t" << std::string(19, ' ');
-    myfile << "theta" << std::string(17, ' ');
-    myfile << "thetaDot" << "\n";
+    myfile << "S" << std::string(19, ' ');
+    myfile << "I" << std::string(19, ' ');
+    myfile << "R" << "\n";
     // Contents
     for (int i = 0 ; i < k; i++) {
         if (i == 0) {
@@ -56,27 +69,19 @@ int main() {
             myfile << i << std::string(1 + (int)log10(k) - (int)log10(i), ' ');
         }
         myfile << setprecision(15) << t[i] << " ";
-        myfile << setprecision(15) << theta[i] << " ";
-        myfile << setprecision(15) << thetaDot[i] << "\n";
+        myfile << setprecision(15) << S[i] << " ";
+        myfile << setprecision(15) << I[i] << " ";
+        myfile << setprecision(15) << R[i] << "\n";
     }
 
     // Plot using matplotlibcpp
     // You will get linting errors for plt::plot, but no build errors if your
     // matplotlibcpp package is installed and set up properly
     plt::figure(1);
-    plt::plot(t, theta, {{"label", "$\\theta$"}});
-    plt::plot(t, thetaDot, {{"label", "$\\dot{\\theta}$"}});
-    plt::xlabel("$t$");
+    plt::plot(t, S, {{"label", "S"}});
+    plt::plot(t, I, {{"label", "I"}});
+    plt::plot(t, R, {{"label", "R"}});
     plt::legend();
-    string figure1Title;
-    figure1Title = "$\\theta$ and $\\dot{\\theta}$ against time";
-    plt::title(figure1Title);
-    plt::save("theta and theta dot against t.svg");
-    plt::figure(2);
-    plt::plot(theta, thetaDot);
-    plt::xlabel("$\\theta$");
-    plt::ylabel("$\\dot{\\theta}$");
-    plt::title("Phase plot");
-    plt::save("Phase plot of thetaDot against theta.svg");
+    plt::save("SIR against time plot.txt");
     return 1;
 }

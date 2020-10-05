@@ -3,11 +3,9 @@
 /**
  * Find dt times the RHS of the ODE expressed as a system of first-order equations.
  *
- * @param g        Acceleration due to gravity in metres per second squared.
- * @param l        Length of the pendulum rod in metres.
- * @param t        Time value. Largely included for the sake of generality, not actually used.
- * @param theta    Angle from the positive x-axis (positive values = above the x-axis).
- * @param thetaDot Rate of change of theta with respect to time.
+ * @param params   A vector of parameters.
+ * @param t        Time value.
+ * @param vars     A vector of dependent variable values.
  * @param dt       Step size.
  * @return         vector of dtheta, dthetaDot
  */
@@ -82,9 +80,10 @@ int main() {
     plt::save("Lorenz 3D phaseplot.svg");
     plt::figure(3);
     plt::clf();
-    plt::plot(t, x);
-    plt::plot(t, y);
-    plt::plot(t, z);
-    plt::save("x, y, z against t plot.svg");
+    plt::plot(t, x, {{"label", "$x$"}});
+    plt::plot(t, y, {{"label", "$y$"}});
+    plt::plot(t, z, {{"label", "$z$"}});
+    plt::legend();
+    plt::save("Lorenz x, y and z against t plot.svg");
     return 1;
 }
