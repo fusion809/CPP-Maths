@@ -138,6 +138,7 @@ int main() {
     plt::figure(4);
     plt::plot(x1, y1, {{"label", "Pendulum 1 path"}});
     plt::plot(x2, y2, {{"label", "Pendulum 2 path"}});
+    plt::legend();
     plt::title("Path of the double pendulum");
     plt::save("Double pendulum path.svg");
     return 1;
