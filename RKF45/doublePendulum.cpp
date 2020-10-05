@@ -10,6 +10,7 @@
  * @return         vector of dtheta, dthetaDot
  */
 std::vector<double> doubPen(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+    // Extract parameters
     double g = params[0];
     double l1 = params[1];
     double l2 = params[2];
@@ -20,6 +21,7 @@ std::vector<double> doubPen(std::vector<double> params, double t, std::vector<do
     double theta2 = vars[2];
     double ptheta2 = vars[3];
 
+    // Define variables used to simplify the ODE system
     double C1 = ptheta1*ptheta2*sin(theta1-theta2)/(l1*l2*(m1+m2*(pow(sin(theta1-theta2), 2))));
     double C2 = ((pow(l2,2))*m2*pow(ptheta1, 2) + (pow(l1, 2))*(m1+m2)*pow(ptheta2, 2) - l1*l2*m2*ptheta1*ptheta2*cos(theta1-theta2))/(2*(pow(l1,2))*(pow(l2,2))*(m1+m2*pow(sin(theta1-theta2), 2)))*sin(2*(theta1-theta2));
     
