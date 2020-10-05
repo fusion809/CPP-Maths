@@ -1,3 +1,8 @@
+Chen:
+	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "Chen.o" "Chen.cpp"
+	chmod +x Chen.o
+	./Chen.o
+
 doublePendulum:
 	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "doublePendulum.o" "doublePendulum.cpp"
 	chmod +x doublePendulum.o
@@ -7,6 +12,11 @@ Lorenz:
 	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "Lorenz.o" "Lorenz.cpp"
 	chmod +x Lorenz.o
 	./Lorenz.o
+
+Rossler:
+	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "Rossler.o" "Rossler.cpp"
+	chmod +x Rossler.o
+	./Rossler.o
 
 simplePendulum:
 	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "simplePendulum.o" "simplePendulum.cpp"
@@ -18,6 +28,11 @@ SIR:
 	chmod +x SIR.o
 	./SIR.o
 
+debug-Chen:
+	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "Chen.o" "Chen.cpp"
+	chmod +x Chen.o
+	gdb Chen.o
+
 debug-doublePendulum:
 	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "doublePendulum.o" "doublePendulum.cpp"
 	chmod +x doublePendulum.o
@@ -27,6 +42,11 @@ debug-Lorenz:
 	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "Lorenz.o" "Lorenz.cpp"
 	chmod +x Lorenz.o
 	gdb Lorenz.o
+
+debug-Rossler:
+	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "Rossler.o" "Rossler.cpp"
+	chmod +x Rossler.o
+	gdb Rossler.o
 
 debug-simplePendulum:
 	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "simplePendulum.o" "simplePendulum.cpp"

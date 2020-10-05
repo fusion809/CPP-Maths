@@ -16,6 +16,8 @@ std::vector<double> doubPen(std::vector<double> params, double t, std::vector<do
     double l2 = params[2];
     double m1 = params[3];
     double m2 = params[4];
+
+    // Extract variables from vars
     double theta1 = vars[0];
     double ptheta1 = vars[1];
     double theta2 = vars[2];
