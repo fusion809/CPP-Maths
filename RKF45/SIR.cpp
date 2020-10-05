@@ -7,22 +7,24 @@
  * @param t        Time value.
  * @param vars     A vector of dependent variable values.
  * @param dt       Step size.
- * @return         vector of dtheta, dthetaDot
+ * @return         vector of differentials
  */
 std::vector<double> SIR(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+    // Extract parameters
     double beta = params[0];
     double gamma = params[1];
     double delta = params[2];
     double N = params[3];
 
+    // Extract variables
     double S = vars[0];
     double I = vars[1];
     double R = vars[2];
 
+    // Derivatives and return differentials
     double dSdt = -beta*I*(1-delta)*S/N;
     double dIdt = beta*I*(1-delta)*S/N - gamma*I;
     double dRdt = gamma*I;
-
     return {dSdt*dt, dIdt*dt, dRdt*dt};
 }
 
@@ -30,21 +32,27 @@ std::vector<double> SIR(std::vector<double> params, double t, std::vector<double
  * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
  */
 int main() {
-    // Initialize relevant variables
+    // Solution parameters
     double epsilon = 1e-11;
+    double dtInitial = 0.1;
+
+    // Initial conditions and domain of integration
     double S0 = 89.0;
     double I0 = 11.0;
     double R0 = 0.0;
+    std::vector<double> conds = {S0, I0, R0};
+    double t0 = 0;
+    double tf = 98;
+
+    // Problem parameters
     double beta = 1.5;
     double gamma = 0.25;
     double delta = 0.5;
     double N = S0 + I0 + R0;
     std::vector<double> params = {beta, gamma, delta, N};
-    double dtInitial = 0.1;
-    double t0 = 0;
-    double tf = 98;
+
     // Solve problem
-    solClass solution = RKF45(SIR, dtInitial, epsilon, params, t0, tf, {S0, I0, R0});
+    solClass solution = RKF45(SIR, dtInitial, epsilon, params, t0, tf, conds);
     std::vector<double> t = solution.t;
     int k = t.size();
     std::vector<std::vector<double>> vars = solution.vars;

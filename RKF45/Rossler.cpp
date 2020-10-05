@@ -7,15 +7,20 @@
  * @param t        Time value.
  * @param vars     A vector of dependent variable values.
  * @param dt       Step size.
- * @return         vector of dtheta, dthetaDot
+ * @return         vector of differentials
  */
 std::vector<double> Rossler(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+    // Extract parameters
     double a = params[0];
     double b = params[1];
     double c = params[2];
+
+    // Extract variables
     double x = vars[0];
     double y = vars[1];
     double z = vars[2];
+
+    // Derivatives and return differentials
     double dxdt = -y-z;
     double dydt = x+a*y;
     double dzdt = b+z*(x-c);
@@ -26,24 +31,29 @@ std::vector<double> Rossler(std::vector<double> params, double t, std::vector<do
  * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
  */
 int main() {
-    // Initialize relevant variables
-    double epsilon = 1e-9;
+    // Initialize conditions and domain of integration
     double x0 = 1.0;
     double y0 = 1.0;
     double z0 = 1.0;
+    double t0 = 0;
+    double tf = 200;
+    std::vector<double> conds = {x0, y0, z0};
+
+    // ODE parameters
     double a = 0.2;
     double b = 0.2;
     double c = 5.7;
     std::vector<double> params = {a, b, c};
 
+    // Solution parameters
+    double epsilon = 1e-9;
     double dtInitial = 0.1;
-    double t0 = 0;
-    double tf = 200;
-    // Solve problem
-    solClass solution = RKF45(Rossler, dtInitial, epsilon, params, t0, tf, {x0, y0, z0});
+
+    // Solve problem and extract solution values
+    solClass solution = RKF45(Rossler, dtInitial, epsilon, params, t0, tf, conds);
     std::vector<double> t = solution.t;
-    int k = t.size();
     std::vector<std::vector<double>> vars = solution.vars;
+    int k = t.size();
     std::vector<double> x = vars[0];
     std::vector<double> y = vars[1];
     std::vector<double> z = vars[2];

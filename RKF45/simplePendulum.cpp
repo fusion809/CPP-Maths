@@ -22,18 +22,24 @@ std::vector<double> simpPen(std::vector<double> params, double t, std::vector<do
  * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
  */
 int main() {
-    // Initialize relevant variables
+    // Solution parameters
     double epsilon = 1e-11;
+    double dtInitial = 0.1;
+
+    // Initial conditions and domain of integration
     double theta0 = 0;
     double thetaDot0 = 0;
+    std::vector<double> conds = {theta0, thetaDot0};
+    double t0 = 0;
+    double tf = 10;
+
+    // Problem parameters
     double g = 9.81;
     double l = 1.0;
     std::vector<double> params = {g, l};
-    double dtInitial = 0.1;
-    double t0 = 0;
-    double tf = 10;
+
     // Solve problem
-    solClass solution = RKF45(simpPen, dtInitial, epsilon, params, t0, tf, {theta0, thetaDot0});
+    solClass solution = RKF45(simpPen, dtInitial, epsilon, params, t0, tf, conds);
     std::vector<double> t = solution.t;
     int k = t.size();
     std::vector<std::vector<double>> vars = solution.vars;

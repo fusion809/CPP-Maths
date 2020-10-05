@@ -7,15 +7,20 @@
  * @param t        Time value.
  * @param vars     A vector of dependent variable values.
  * @param dt       Step size.
- * @return         vector of dtheta, dthetaDot
+ * @return         vector of differentials
  */
 std::vector<double> Chen(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+    // Extract parameter values
     double a = params[0];
     double b = params[1];
     double c = params[2];
+
+    // Extract variable values
     double x = vars[0];
     double y = vars[1];
     double z = vars[2];
+
+    // Derivatives and differentials
     double dxdt = a*(y-x);
     double dydt = (c-a)*x-x*z+c*y;
     double dzdt = x*y-b*z;
@@ -26,21 +31,26 @@ std::vector<double> Chen(std::vector<double> params, double t, std::vector<doubl
  * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
  */
 int main() {
-    // Initialize relevant variables
+    // Solution parameters
+    double dtInitial = 0.1;
     double epsilon = 1e-9;
+
+    // Initial conditions and domain of integration
     double x0 = -0.1;
     double y0 = 0.5;
     double z0 = -0.6;
+    std::vector<double> conds = {x0, y0, z0};
+    double t0 = 0;
+    double tf = 60;
+
+    // Problem parameters
     double a = 40;
     double b = 3;
     double c = 28;
     std::vector<double> params = {a, b, c};
 
-    double dtInitial = 0.1;
-    double t0 = 0;
-    double tf = 60;
     // Solve problem
-    solClass solution = RKF45(Chen, dtInitial, epsilon, params, t0, tf, {x0, y0, z0});
+    solClass solution = RKF45(Chen, dtInitial, epsilon, params, t0, tf, conds);
     std::vector<double> t = solution.t;
     int k = t.size();
     std::vector<std::vector<double>> vars = solution.vars;

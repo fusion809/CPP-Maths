@@ -7,7 +7,7 @@
  * @param t        Time value.
  * @param vars     A vector of dependent variable values.
  * @param dt       Step size.
- * @return         vector of dtheta, dthetaDot
+ * @return         vector of differentials
  */
 std::vector<double> doubPen(std::vector<double> params, double t, std::vector<double> vars, double dt) {
     // Extract parameters
@@ -26,13 +26,12 @@ std::vector<double> doubPen(std::vector<double> params, double t, std::vector<do
     // Define variables used to simplify the ODE system
     double C1 = ptheta1*ptheta2*sin(theta1-theta2)/(l1*l2*(m1+m2*(pow(sin(theta1-theta2), 2))));
     double C2 = ((pow(l2,2))*m2*pow(ptheta1, 2) + (pow(l1, 2))*(m1+m2)*pow(ptheta2, 2) - l1*l2*m2*ptheta1*ptheta2*cos(theta1-theta2))/(2*(pow(l1,2))*(pow(l2,2))*(m1+m2*pow(sin(theta1-theta2), 2)))*sin(2*(theta1-theta2));
-    
-    // Derivatives
+
+    // Derivatives and return differentials
     double thetaDot1 = (l2 * ptheta1 - l1*ptheta2 * cos(theta1))/((pow(l1, 2))*l2*(m1+m2*((pow(sin(theta1-theta2), 2)))));
     double pthetaDot1 = -(m1+m2)*g*l1*sin(theta1) - C1 + C2;
     double thetaDot2 = (l1*(m1+m2)*ptheta2-l2*m2*ptheta1*cos(theta1-theta2))/(l1*(pow(l2, 2))*m2*(m1+m2*(pow(sin(theta1-theta2), 2))));
     double pthetaDot2 = -m2*g*l2*sin(theta2)+C1-C2;
-
     return {dt*thetaDot1, dt*pthetaDot1, dt*thetaDot2, dt*pthetaDot2};
 }
 
@@ -40,11 +39,14 @@ std::vector<double> doubPen(std::vector<double> params, double t, std::vector<do
  * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
  */
 int main() {
-    // Initial conditions
+    // Initial conditions and domain of integration
     double theta10 = M_PI/2;
     double ptheta10 = 0;
     double theta20 = M_PI/2;
     double ptheta20 = 0;
+    std::vector<double> conds = {theta10, ptheta10, theta20, ptheta20};
+    double t0 = 0.0;
+    double tf = 100.0;
 
     // Problem parameters
     double g = 9.81;
@@ -57,11 +59,9 @@ int main() {
     // Other parameters
     double epsilon = 1e-9;
     double dtInitial = 0.1;
-    double t0 = 0;
-    double tf = 100;
 
     // Solve problem
-    solClass solution = RKF45(doubPen, dtInitial, epsilon, params, t0, tf, {theta10, ptheta10, theta20, ptheta20});
+    solClass solution = RKF45(doubPen, dtInitial, epsilon, params, t0, tf, conds);
     std::vector<double> t = solution.t;
     std::vector<std::vector<double>> vars = solution.vars;
     int k = t.size();

@@ -7,15 +7,20 @@
  * @param t        Time value.
  * @param vars     A vector of dependent variable values.
  * @param dt       Step size.
- * @return         vector of dtheta, dthetaDot
+ * @return         vector of differentials
  */
 std::vector<double> Lorenz(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+    // Extract parameters
     double sigma = params[0];
     double beta = params[1];
     double rho = params[2];
+
+    // Extract variable values
     double x = vars[0];
     double y = vars[1];
     double z = vars[2];
+
+    // Derivatives and return differentials
     double dxdt = sigma*(y-x);
     double dydt = x*(rho-z) - y;
     double dzdt = x*y - beta*z;
@@ -26,20 +31,26 @@ std::vector<double> Lorenz(std::vector<double> params, double t, std::vector<dou
  * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
  */
 int main() {
-    // Initialize relevant variables
+    // Solution parameters
+    double dtInitial = 0.1;
     double epsilon = 1e-9;
+
+    // Initial conditions and domain of integration
     double x0 = 1.0;
     double y0 = 1.0;
     double z0 = 1.0;
+    std::vector<double> conds = {x0, y0, z0};
+    double t0 = 0;
+    double tf = 60;
+
+    // Problem parameters
     double sigma = 10.0;
     double beta = 8.0/3.0;
     double rho = 28.0;
     std::vector<double> params = {sigma, beta, rho};
-    double dtInitial = 0.1;
-    double t0 = 0;
-    double tf = 60;
+
     // Solve problem
-    solClass solution = RKF45(Lorenz, dtInitial, epsilon, params, t0, tf, {x0, y0, z0});
+    solClass solution = RKF45(Lorenz, dtInitial, epsilon, params, t0, tf, conds);
     std::vector<double> t = solution.t;
     int k = t.size();
     std::vector<std::vector<double>> vars = solution.vars;
