@@ -1,4 +1,4 @@
-#include <RKF45.cpp>
+#include "RKF45.h"
 
 /**
  * Find dt times the RHS of the ODE expressed as a system of first-order equations.

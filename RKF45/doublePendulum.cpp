@@ -1,4 +1,4 @@
-#include <RKF45.cpp>
+#include "RKF45.h"
 
 /**
  * Find dt times the RHS of the ODE expressed as a system of first-order equations.
@@ -38,30 +38,43 @@ std::vector<double> doubPen(std::vector<double> params, double t, std::vector<do
  * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
  */
 int main() {
-    // Initialize relevant variables
-    double epsilon = 1e-9;
+    // Initial conditions
     double theta10 = M_PI/2;
     double ptheta10 = 0;
     double theta20 = M_PI/2;
     double ptheta20 = 0;
+
+    // Problem parameters
     double g = 9.81;
     double l1 = 1.0;
     double l2 = 1.0;
     double m1 = 1.0;
     double m2 = 1.0;
     std::vector<double> params = {g, l1, l2, m1, m2};
+
+    // Other parameters
+    double epsilon = 1e-9;
     double dtInitial = 0.1;
     double t0 = 0;
     double tf = 100;
+
     // Solve problem
     solClass solution = RKF45(doubPen, dtInitial, epsilon, params, t0, tf, {theta10, ptheta10, theta20, ptheta20});
     std::vector<double> t = solution.t;
-    int k = t.size();
     std::vector<std::vector<double>> vars = solution.vars;
+    int k = t.size();
+
+    // Extract solution values from vars
     std::vector<double> theta1 = vars[0];
     std::vector<double> ptheta1 = vars[1];
     std::vector<double> theta2 = vars[2];
     std::vector<double> ptheta2 = vars[3];
+
+    // Initialize pendulum coordinates
+    std::vector<double> x1(k, 0.0);
+    std::vector<double> x2(k, 0.0);
+    std::vector<double> y1(k, 0.0);
+    std::vector<double> y2(k, 0.0);
 
     // Write to file
     ofstream myfile;
@@ -75,11 +88,20 @@ int main() {
     myfile << "ptheta2" << "\n";
     // Contents
     for (int i = 0 ; i < k; i++) {
+        // Spacing in file between columns
         if (i == 0) {
             myfile << i << std::string(1 + (int)log10(k), ' ');
         } else {
             myfile << i << std::string(1 + (int)log10(k) - (int)log10(i), ' ');
         }
+
+        // Calculate pendulum Cartesian coordinates
+        x1[i] = l1*sin(theta1[i]);
+        y1[i] = -l1*cos(theta1[i]);
+        x2[i] = x1[i] + l2*sin(theta2[i]);
+        y2[i] = y1[i] - l2*cos(theta2[i]);
+
+        // Table entries in file
         myfile << setprecision(15) << t[i] << " ";
         myfile << setprecision(15) << theta1[i] << " ";
         myfile << setprecision(15) << ptheta1[i] << " ";
@@ -113,5 +135,10 @@ int main() {
     plt::ylabel("$p_{\\theta_2}$");
     plt::title("Phase plot");
     plt::save("Phase plot of ptheta2 against theta2.svg");
+    plt::figure(4);
+    plt::plot(x1, y1, {{"label", "Pendulum 1 path"}});
+    plt::plot(x2, y2, {{"label", "Pendulum 2 path"}});
+    plt::title("Path of the double pendulum");
+    plt::save("Double pendulum path.svg");
     return 1;
 }
