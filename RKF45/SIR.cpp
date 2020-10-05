@@ -82,6 +82,6 @@ int main() {
     plt::plot(t, I, {{"label", "I"}});
     plt::plot(t, R, {{"label", "R"}});
     plt::legend();
-    plt::save("SIR against time plot.txt");
+    plt::save("SIR against time plot.svg");
     return 1;
 }
