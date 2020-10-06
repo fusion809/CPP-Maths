@@ -77,12 +77,12 @@ int main() {
     string figure1Title;
     figure1Title = "$\\theta$ and $\\dot{\\theta}$ against time";
     plt::title(figure1Title);
-    plt::save("theta and theta dot against t.svg");
+    plt::save("Simple pendulum: theta and theta dot against t.svg");
     plt::figure(2);
     plt::plot(theta, thetaDot);
     plt::xlabel("$\\theta$");
     plt::ylabel("$\\dot{\\theta}$");
     plt::title("Phase plot");
-    plt::save("Phase plot of thetaDot against theta.svg");
+    plt::save("Simple pendulum: phase plot of thetaDot against theta.svg");
     return 1;
 }
