@@ -8,6 +8,11 @@ doublePendulum:
 	chmod +x doublePendulum.o
 	./doublePendulum.o
 
+elasticPendulum:
+	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "elasticPendulum.o" "elasticPendulum.cpp"
+	chmod +x elasticPendulum.o
+	./elasticPendulum.o
+
 Lorenz:
 	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "Lorenz.o" "Lorenz.cpp"
 	chmod +x Lorenz.o
@@ -37,6 +42,11 @@ debug-doublePendulum:
 	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "doublePendulum.o" "doublePendulum.cpp"
 	chmod +x doublePendulum.o
 	gdb doublePendulum.o
+
+debug-elasticPendulum:
+	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "elasticPendulum.o" "elasticPendulum.cpp"
+	chmod +x elasticPendulum.o
+	gdb elasticPendulum.o
 
 debug-Lorenz:
 	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "Lorenz.o" "Lorenz.cpp"
