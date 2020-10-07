@@ -1,3 +1,12 @@
+// From matplotlib-cpp-git AUR package
+#include <matplotlib-cpp/matplotlibcpp.h>
+namespace plt = matplotlibcpp;
+#include <iostream>
+// Required for setprecision
+#include <iomanip>
+#include <string>
+#include <fstream>
+// RKF45 function
 #include "RKF45.h"
 
 /**

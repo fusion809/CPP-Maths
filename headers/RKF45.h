@@ -1,21 +1,8 @@
-#include <iostream>
 #include <vector>
-#include <string>
-#include <fstream>
 #include <cmath>
-#include <utility>
-#include <unistd.h>
-#include <algorithm>
-#include <bits/stdc++.h>
-#include <functional>
 #include <stdio.h>
 #include <stdlib.h>
-// Required for setprecision
-#include <iomanip>
-// From matplotlib-cpp-git AUR package
-#include <matplotlib-cpp/matplotlibcpp.h>
 using namespace std;
-namespace plt = matplotlibcpp;
 
 /**
  * @brief Create an object with which we can store solution values, namely i, 
@@ -181,7 +168,7 @@ vector<double> params, double t0, double tf, vector<double> conds) {
             varsTrans[m][l] = vars[l][m];
         }
     }
-    
+
     // Write solution values to solClass object
     solution.i = i;
     solution.t = t;
