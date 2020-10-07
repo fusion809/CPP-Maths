@@ -22,12 +22,11 @@ class solClass {
  * Solve the problem using the Runge-Kutta-Fehlberg method of 4/5th order.
  *
  * @param f             Function that calculates the RHS of the problem 
- * expressed as a system.
+ * expressed as a system. This solver assumes the system has been expressed 
+ * as: dx = f(x, t, params, dt) (dt = step size, x is a vector of variables).
  * @param dtInitial     Initial step size.
  * @param epsilon       Error tolerance.
- * @param g             Acceleration due to gravity in metres per second 
- * squared.
- * @param l             Length of the pendulum rod in metres.
+ * @param params        A vector of parameters for f.
  * @param t0            Start time of the simulation.
  * @param tf            End time of the simulation.
  * @param theta0        Initial angle from the positive x-axis in radians.
@@ -49,7 +48,7 @@ vector<double> params, double t0, double tf, vector<double> conds) {
     solClass solution;
 
     // Loop over t[i], increasing it by df at each step, until t[i] = tf
-    while (t[i] < tf ) {
+    while ( t[i] < tf ) {
         dt = std::min(dt, tf-t[i]);
 
         // Approximators for the change in theta and thetaDot
@@ -85,7 +84,7 @@ vector<double> params, double t0, double tf, vector<double> conds) {
         vector<double> vars2 = vecAdd({vars[i], vecScalMult(K1, 16.0/135.0), 
         vecScalMult(K3, 6656.0/12825.0), vecScalMult(K4, 28561.0/56430.0), 
         vecScalMult(K5, -9.0/50.0), vecScalMult(K6, 2.0/55.0)});
-        
+
         // Approximate error in theta and thetaDot and, if necessary, adjust
         // dt to fix the error
         vector<double> Rvars = vecScalMult(vecAbs(vecAdd(
