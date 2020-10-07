@@ -2,6 +2,7 @@
 #include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vecOps.h>
 using namespace std;
 
 /**
@@ -16,67 +17,6 @@ class solClass {
         vector<vector<double>> vars; /**< Vector of vectors of dependent 
         variable values. */
 };
-
-/**
- * Multiply a vector by a scalar
- * 
- * @param vec      Vector to be multiplied.
- * @param scalar   A floating point number the vector is to be multiplied by.
- * @return         vec * scalar
- */
-vector<double> vecMult(vector<double> vec, double scalar) {
-    int N = vec.size();
-    vector<double> multvec = {};
-    for (int i = 0; i < N; i++) {
-        multvec.push_back(vec[i]*scalar);
-    }
-    return multvec;
-}
-
-/**
- * Add vectors within the vector of vectors vvec
- * 
- * @param vvec          Vector of vectors that are to be added.
- * @return              Vector that is the sum of the vectors contained within
- * vvec.
- */
-vector<double> vecAdd(vector<vector<double>> vvec) {
-    int N = vvec.size();
-    int M = (vvec[0]).size();
-    vector<double> addedVec(M, 0);
-    for (int j = 0; j < M; j++) {
-        for (int i = 0; i < N; i++) {
-            addedVec[j] += vvec[i][j];
-        }
-    }
-    return addedVec;
-}
-
-/**
- * Find the absolute value of a specified vector
- * 
- * @param vec           Vector whose absolute value is to be determined.
- * @return              abs(vec)
- */
-vector<double> vecAbs(vector<double> vec) {
-    int N = vec.size();
-    vector<double> vecAbs;
-    for (int i = 0; i < N ; i++) {
-        vecAbs.push_back(abs(vec[i]));
-    }
-    return vecAbs;
-}
-
-/**
- * Find the maximum value of a specified vector
- *
- * @param vec           Vector whose maximum value is being found.
- * @return              Maximum element of vec.
- */
-double vecMax(vector<double> vec) {
-    double max = *std::max_element(vec.begin(), vec.end());
-    return max;
-}
 
 /**
  * Solve the problem using the Runge-Kutta-Fehlberg method of 4/5th order.
@@ -118,37 +58,38 @@ vector<double> params, double t0, double tf, vector<double> conds) {
         vector<double> K1 = f(params, t[i], vars[i], dt);
 
         vector<double> K2 = f(params, t[i] + dt/4, vecAdd({vars[i], 
-        vecMult(K1, 0.25)}), dt);
+        vecScalMult(K1, 0.25)}), dt);
 
         vector<double> K3 = f(params, t[i] + 3.0*dt/8.0, vecAdd({vars[i], 
-        vecMult(K1, 3.0/32.0), vecMult(K2, 9.0/32.0)}), dt);
+        vecScalMult(K1, 3.0/32.0), vecScalMult(K2, 9.0/32.0)}), dt);
 
-        vector<double> K4 = f(params, t[i]+12.0*dt/13.0, vecAdd({vars[i], 
-        vecMult(K1, 1932.0/2197.0), vecMult(K2, -7200.0/2197.0), 
-        vecMult(K3, 7296.0/2197.0)}), dt);
+        vector<double> K4 = f(params, t[i] + 12.0*dt/13.0, vecAdd({vars[i], 
+        vecScalMult(K1, 1932.0/2197.0), vecScalMult(K2, -7200.0/2197.0), 
+        vecScalMult(K3, 7296.0/2197.0)}), dt);
 
-        vector<double> K5 = f(params, t[i]+dt, vecAdd({vars[i], 
-        vecMult(K1, 439.0/216.0), vecMult(K2, -8.0), 
-        vecMult(K3, 3680.0/513.0), vecMult(K4, -845.0/4104.0)}), dt);
+        vector<double> K5 = f(params, t[i] + dt, vecAdd({vars[i], 
+        vecScalMult(K1, 439.0/216.0), vecScalMult(K2, -8.0), 
+        vecScalMult(K3, 3680.0/513.0), vecScalMult(K4, -845.0/4104.0)}), dt);
 
-        vector<double> K6 = f(params, t[i]+dt/2.0, 
-        vecAdd({vars[i], vecMult(K1, -8.0/27.0), vecMult(K2, 2.0), 
-        vecMult(K3, -3544.0/2565.0), vecMult(K4, 1859.0/4104.0), 
-        vecMult(K5, -11.0/40.0)}), dt);
+        vector<double> K6 = f(params, t[i] + dt/2.0, 
+        vecAdd({vars[i], vecScalMult(K1, -8.0/27.0), vecScalMult(K2, 2.0), 
+        vecScalMult(K3, -3544.0/2565.0), vecScalMult(K4, 1859.0/4104.0), 
+        vecScalMult(K5, -11.0/40.0)}), dt);
 
         // theta1 and thetaDot1 are 4th order approx
         // theta2 and thetaDot2 are 5th order approx
-        vector<double> vars1 = vecAdd({vars[i], vecMult(K1, 25.0/216.0), 
-        vecMult(K3, 1408.0/2565.0), vecMult(K4, 2197.0/4104.0), 
-        vecMult(K5, -1.0/5.0)});
+        vector<double> vars1 = vecAdd({vars[i], vecScalMult(K1, 25.0/216.0), 
+        vecScalMult(K3, 1408.0/2565.0), vecScalMult(K4, 2197.0/4104.0), 
+        vecScalMult(K5, -1.0/5.0)});
 
-        vector<double> vars2 = vecAdd({vars[i], vecMult(K1, 16.0/135.0), 
-        vecMult(K3, 6656.0/12825.0), vecMult(K4, 28561.0/56430.0), 
-        vecMult(K5, -9.0/50.0), vecMult(K6, 2.0/55.0)});
+        vector<double> vars2 = vecAdd({vars[i], vecScalMult(K1, 16.0/135.0), 
+        vecScalMult(K3, 6656.0/12825.0), vecScalMult(K4, 28561.0/56430.0), 
+        vecScalMult(K5, -9.0/50.0), vecScalMult(K6, 2.0/55.0)});
+        
         // Approximate error in theta and thetaDot and, if necessary, adjust
         // dt to fix the error
-        vector<double> Rvars = vecMult(vecAbs(vecAdd(
-            {vars1, vecMult(vars2, -1.0)})), 1.0/dt);
+        vector<double> Rvars = vecScalMult(vecAbs(vecAdd(
+            {vars1, vecScalMult(vars2, -1.0)})), 1.0/dt);
         double R = vecMax(Rvars);
         double s = pow((epsilon/(2.0*R)), 0.25);
         if (R <= epsilon) {
