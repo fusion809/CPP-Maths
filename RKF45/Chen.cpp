@@ -1,7 +1,8 @@
 #include "RKF45.h"
 
 /**
- * Find dt times the RHS of the ODE expressed as a system of first-order equations.
+ * Find dt times the RHS of the ODE expressed as a system of first-order 
+ * equations.
  *
  * @param params   A vector of parameters.
  * @param t        Time value.
@@ -9,7 +10,8 @@
  * @param dt       Step size.
  * @return         vector of differentials
  */
-std::vector<double> Chen(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+vector<double> Chen(vector<double> params, double t, vector<double> vars, 
+double dt) {
     // Extract parameter values
     double a = params[0];
     double b = params[1];
@@ -28,7 +30,8 @@ std::vector<double> Chen(std::vector<double> params, double t, std::vector<doubl
 }
 
 /**
- * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
+ * @brief Solves the problem and provides desired output, such as saved plots 
+ * and data in a textfile.
  */
 int main() {
     // Solution parameters
@@ -39,7 +42,7 @@ int main() {
     double x0 = -0.1;
     double y0 = 0.5;
     double z0 = -0.6;
-    std::vector<double> conds = {x0, y0, z0};
+    vector<double> conds = {x0, y0, z0};
     double t0 = 0;
     double tf = 60;
 
@@ -47,16 +50,16 @@ int main() {
     double a = 40;
     double b = 3;
     double c = 28;
-    std::vector<double> params = {a, b, c};
+    vector<double> params = {a, b, c};
 
     // Solve problem
     solClass solution = RKF45(Chen, dtInitial, epsilon, params, t0, tf, conds);
-    std::vector<double> t = solution.t;
+    vector<double> t = solution.t;
     int k = t.size();
-    std::vector<std::vector<double>> vars = solution.vars;
-    std::vector<double> x = vars[0];
-    std::vector<double> y = vars[1];
-    std::vector<double> z = vars[2];
+    vector<vector<double>> vars = solution.vars;
+    vector<double> x = vars[0];
+    vector<double> y = vars[1];
+    vector<double> z = vars[2];
 
     // Write to file
     ofstream myfile;

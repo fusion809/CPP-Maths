@@ -1,7 +1,8 @@
 #include "RKF45.h"
 
 /**
- * Find dt times the RHS of the ODE expressed as a system of first-order equations.
+ * Find dt times the RHS of the ODE expressed as a system of first-order 
+ * equations.
  *
  * @param params   A vector of parameters.
  * @param t        Time value.
@@ -9,7 +10,8 @@
  * @param dt       Step size.
  * @return         vector of differentials
  */
-std::vector<double> doubPen(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+vector<double> doubPen(vector<double> params, double t, vector<double> vars, 
+double dt) {
     // Extract parameters
     double g = params[0];
     double l0 = params[1];
@@ -29,7 +31,8 @@ std::vector<double> doubPen(std::vector<double> params, double t, std::vector<do
 }
 
 /**
- * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
+ * @brief Solves the problem and provides desired output, such as saved plots
+ * and data in a textfile.
  */
 int main() {
     // Initial conditions and domain of integration
@@ -37,7 +40,7 @@ int main() {
     double xDot0 = 0.0;
     double theta0 = M_PI/2;
     double thetaDot0 = 0.0;
-    std::vector<double> conds = {x0, xDot0, theta0, thetaDot0};
+    vector<double> conds = {x0, xDot0, theta0, thetaDot0};
     double t0 = 0.0;
     double tf = 20.0;
 
@@ -46,23 +49,24 @@ int main() {
     double l0 = 1.0;
     double k = 1.0;
     double m = 1.0;
-    std::vector<double> params = {g, l0, k, m};
+    vector<double> params = {g, l0, k, m};
 
     // Other parameters
     double epsilon = 1e-9;
     double dtInitial = 0.1;
 
     // Solve problem
-    solClass solution = RKF45(doubPen, dtInitial, epsilon, params, t0, tf, conds);
-    std::vector<double> t = solution.t;
-    std::vector<std::vector<double>> vars = solution.vars;
+    solClass solution = RKF45(doubPen, dtInitial, epsilon, params, t0, tf, 
+    conds);
+    vector<double> t = solution.t;
+    vector<vector<double>> vars = solution.vars;
     int K = t.size();
 
     // Extract solution values from vars
-    std::vector<double> x = vars[0];
-    std::vector<double> xDot = vars[1];
-    std::vector<double> theta = vars[2];
-    std::vector<double> thetaDot = vars[3];
+    vector<double> x = vars[0];
+    vector<double> xDot = vars[1];
+    vector<double> theta = vars[2];
+    vector<double> thetaDot = vars[3];
 
     // Write to file
     ofstream myfile;

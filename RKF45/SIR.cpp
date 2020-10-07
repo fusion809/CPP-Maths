@@ -1,7 +1,8 @@
 #include "RKF45.h"
 
 /**
- * Find dt times the RHS of the ODE expressed as a system of first-order equations.
+ * Find dt times the RHS of the ODE expressed as a system of first-order 
+ * equations.
  *
  * @param params   A vector of parameters.
  * @param t        Time value.
@@ -9,7 +10,8 @@
  * @param dt       Step size.
  * @return         vector of differentials
  */
-std::vector<double> SIR(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+vector<double> SIR(vector<double> params, double t, vector<double> vars, 
+double dt) {
     // Extract parameters
     double beta = params[0];
     double gamma = params[1];
@@ -29,7 +31,8 @@ std::vector<double> SIR(std::vector<double> params, double t, std::vector<double
 }
 
 /**
- * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
+ * @brief Solves the problem and provides desired output, such as saved plots 
+ * and data in a textfile.
  */
 int main() {
     // Solution parameters
@@ -40,7 +43,7 @@ int main() {
     double S0 = 89.0;
     double I0 = 11.0;
     double R0 = 0.0;
-    std::vector<double> conds = {S0, I0, R0};
+    vector<double> conds = {S0, I0, R0};
     double t0 = 0;
     double tf = 98;
 
@@ -49,16 +52,16 @@ int main() {
     double gamma = 0.25;
     double delta = 0.5;
     double N = S0 + I0 + R0;
-    std::vector<double> params = {beta, gamma, delta, N};
+    vector<double> params = {beta, gamma, delta, N};
 
     // Solve problem
     solClass solution = RKF45(SIR, dtInitial, epsilon, params, t0, tf, conds);
-    std::vector<double> t = solution.t;
+    vector<double> t = solution.t;
     int k = t.size();
-    std::vector<std::vector<double>> vars = solution.vars;
-    std::vector<double> S = vars[0];
-    std::vector<double> I = vars[1];
-    std::vector<double> R = vars[2];
+    vector<vector<double>> vars = solution.vars;
+    vector<double> S = vars[0];
+    vector<double> I = vars[1];
+    vector<double> R = vars[2];
 
     // Write to file
     ofstream myfile;

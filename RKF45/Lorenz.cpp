@@ -1,7 +1,8 @@
 #include "RKF45.h"
 
 /**
- * Find dt times the RHS of the ODE expressed as a system of first-order equations.
+ * Find dt times the RHS of the ODE expressed as a system of first-order 
+ * equations.
  *
  * @param params   A vector of parameters.
  * @param t        Time value.
@@ -9,7 +10,8 @@
  * @param dt       Step size.
  * @return         vector of differentials
  */
-std::vector<double> Lorenz(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+vector<double> Lorenz(vector<double> params, double t, vector<double> vars, 
+double dt) {
     // Extract parameters
     double sigma = params[0];
     double beta = params[1];
@@ -28,7 +30,8 @@ std::vector<double> Lorenz(std::vector<double> params, double t, std::vector<dou
 }
 
 /**
- * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
+ * @brief Solves the problem and provides desired output, such as saved plots 
+ * and data in a textfile.
  */
 int main() {
     // Solution parameters
@@ -39,7 +42,7 @@ int main() {
     double x0 = 1.0;
     double y0 = 1.0;
     double z0 = 1.0;
-    std::vector<double> conds = {x0, y0, z0};
+    vector<double> conds = {x0, y0, z0};
     double t0 = 0;
     double tf = 60;
 
@@ -47,16 +50,17 @@ int main() {
     double sigma = 10.0;
     double beta = 8.0/3.0;
     double rho = 28.0;
-    std::vector<double> params = {sigma, beta, rho};
+    vector<double> params = {sigma, beta, rho};
 
     // Solve problem
-    solClass solution = RKF45(Lorenz, dtInitial, epsilon, params, t0, tf, conds);
-    std::vector<double> t = solution.t;
+    solClass solution = RKF45(Lorenz, dtInitial, epsilon, params, t0, tf, 
+    conds);
+    vector<double> t = solution.t;
     int k = t.size();
-    std::vector<std::vector<double>> vars = solution.vars;
-    std::vector<double> x = vars[0];
-    std::vector<double> y = vars[1];
-    std::vector<double> z = vars[2];
+    vector<vector<double>> vars = solution.vars;
+    vector<double> x = vars[0];
+    vector<double> y = vars[1];
+    vector<double> z = vars[2];
 
     // Write to file
     ofstream myfile;

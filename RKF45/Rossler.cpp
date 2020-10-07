@@ -1,7 +1,8 @@
 #include "RKF45.h"
 
 /**
- * Find dt times the RHS of the ODE expressed as a system of first-order equations.
+ * Find dt times the RHS of the ODE expressed as a system of first-order 
+ * equations.
  *
  * @param params   A vector of parameters.
  * @param t        Time value.
@@ -9,7 +10,8 @@
  * @param dt       Step size.
  * @return         vector of differentials
  */
-std::vector<double> Rossler(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+vector<double> Rossler(vector<double> params, double t, vector<double> vars, 
+double dt) {
     // Extract parameters
     double a = params[0];
     double b = params[1];
@@ -28,7 +30,8 @@ std::vector<double> Rossler(std::vector<double> params, double t, std::vector<do
 }
 
 /**
- * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
+ * @brief Solves the problem and provides desired output, such as saved plots 
+ * and data in a textfile.
  */
 int main() {
     // Initialize conditions and domain of integration
@@ -37,26 +40,27 @@ int main() {
     double z0 = 1.0;
     double t0 = 0;
     double tf = 200;
-    std::vector<double> conds = {x0, y0, z0};
+    vector<double> conds = {x0, y0, z0};
 
     // ODE parameters
     double a = 0.2;
     double b = 0.2;
     double c = 5.7;
-    std::vector<double> params = {a, b, c};
+    vector<double> params = {a, b, c};
 
     // Solution parameters
     double epsilon = 1e-9;
     double dtInitial = 0.1;
 
     // Solve problem and extract solution values
-    solClass solution = RKF45(Rossler, dtInitial, epsilon, params, t0, tf, conds);
-    std::vector<double> t = solution.t;
-    std::vector<std::vector<double>> vars = solution.vars;
+    solClass solution = RKF45(Rossler, dtInitial, epsilon, params, t0, tf, 
+    conds);
+    vector<double> t = solution.t;
+    vector<vector<double>> vars = solution.vars;
     int k = t.size();
-    std::vector<double> x = vars[0];
-    std::vector<double> y = vars[1];
-    std::vector<double> z = vars[2];
+    vector<double> x = vars[0];
+    vector<double> y = vars[1];
+    vector<double> z = vars[2];
 
     // Write to file
     ofstream myfile;

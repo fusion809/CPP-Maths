@@ -63,3 +63,15 @@ double simpsons(double a, double b, int N, std::vector<double> params, double(*f
 
     return integral;
 };
+
+double adaptive_simpsons(double a, double b, double tol, std::vector<double> params, double(*f)(double, std::vector<double>)) {
+    int N = 10;
+    double criterion = 100*tol;
+    while (criterion >= 15*tol) {
+        criterion = std::abs((simpsons(a, (a+b)/2, N, params, f)+simpsons((a+b)/2, b, N, params, f)-simpsons(a, b, N, params, f))/simpsons(a, b, N, params, f));
+        N *= 2;
+    }
+
+    double integral = simpsons(a, b, N, params, f);
+    return integral;
+}

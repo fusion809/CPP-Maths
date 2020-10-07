@@ -1,7 +1,8 @@
 #include "RKF45.h"
 
 /**
- * Find dt times the RHS of the ODE expressed as a system of first-order equations.
+ * Find dt times the RHS of the ODE expressed as a system of first-order 
+ * equations.
  *
  * @param params   A vector of parameters.
  * @param t        Time value.
@@ -9,7 +10,8 @@
  * @param dt       Step size.
  * @return         vector of dtheta, dthetaDot
  */
-std::vector<double> simpPen(std::vector<double> params, double t, std::vector<double> vars, double dt) {
+vector<double> simpPen(vector<double> params, double t, vector<double> vars, 
+double dt) {
     double g = params[0];
     double l = params[1];
     double theta = vars[0];
@@ -19,7 +21,8 @@ std::vector<double> simpPen(std::vector<double> params, double t, std::vector<do
 }
 
 /**
- * @brief          Solves the problem and provides desired output, such as saved plots and data in a textfile.
+ * @brief Solves the problem and provides desired output, such as saved plots 
+ * and data in a textfile.
  */
 int main() {
     // Solution parameters
@@ -29,22 +32,23 @@ int main() {
     // Initial conditions and domain of integration
     double theta0 = 0;
     double thetaDot0 = 0;
-    std::vector<double> conds = {theta0, thetaDot0};
+    vector<double> conds = {theta0, thetaDot0};
     double t0 = 0;
     double tf = 10;
 
     // Problem parameters
     double g = 9.81;
     double l = 1.0;
-    std::vector<double> params = {g, l};
+    vector<double> params = {g, l};
 
     // Solve problem
-    solClass solution = RKF45(simpPen, dtInitial, epsilon, params, t0, tf, conds);
-    std::vector<double> t = solution.t;
+    solClass solution = RKF45(simpPen, dtInitial, epsilon, params, t0, tf, 
+    conds);
+    vector<double> t = solution.t;
     int k = t.size();
-    std::vector<std::vector<double>> vars = solution.vars;
-    std::vector<double> theta = vars[0];
-    std::vector<double> thetaDot = vars[1];
+    vector<vector<double>> vars = solution.vars;
+    vector<double> theta = vars[0];
+    vector<double> thetaDot = vars[1];
 
     // Write to file
     ofstream myfile;

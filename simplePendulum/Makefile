@@ -14,3 +14,5 @@ build-docs:
 docs:
 	make build-docs
 	google-chrome-stable ./html/index.html
+test-adaptive:
+	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -o "test_adaptive.o" "test_adaptive.cpp"
