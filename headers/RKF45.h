@@ -172,6 +172,7 @@ vector<double> params, double t0, double tf, vector<double> conds) {
         dt *= s;
     }
 
+    // Transpose vars to make it easier to obtain solution values
     int N1 = vars.size();
     int N2 = vars[0].size();
     vector<vector<double>> varsTrans(N2, vector<double>(N1));
@@ -180,6 +181,7 @@ vector<double> params, double t0, double tf, vector<double> conds) {
             varsTrans[m][l] = vars[l][m];
         }
     }
+    
     // Write solution values to solClass object
     solution.i = i;
     solution.t = t;
