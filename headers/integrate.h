@@ -38,17 +38,12 @@ double chebGaussQuad(double a, double b, double N, std::vector<double> params, d
  * 
  * @param a        Start of the domain of integration.
  * @param b        End of the domain of integration.
- * @param N        Step number, must be odd.
+ * @param N        Step number.
  * @param params   A vector containing all parameters for function f.
  * @param f        A funcction of x and params. 
  * @return         The integral of f(x, param) from a to b.
  */
 double simpsons(double a, double b, int N, std::vector<double> params, double(*f)(double, std::vector<double>)) {
-    // Step size
-    // if (N % 2 == 1) {
-    //     std::cout << "You tried to run simpsons on an even N.";
-    //     return 0;
-    // }
     double step = (b-a)/N;
     double grid = a;
     double integral = 0;
@@ -62,14 +57,29 @@ double simpsons(double a, double b, int N, std::vector<double> params, double(*f
     return integral;
 };
 
+/**
+ * @brief Uses adaptive Simpson's rule to approximate the value of a 1d integral.
+ * 
+ * @param a        Start of the domain of integration.
+ * @param b        End of the domain of integration.
+ * @param tol      Error tolerance.
+ * @param params   Parameters for f.
+ * @param f        Function to be integrated; must accept arguments x 
+ * (variable being integrated over) and params.
+ * @return         The approximation of the integral.
+ */
 double adaptive_simpsons(double a, double b, double tol, std::vector<double> params, double(*f)(double, std::vector<double>)) {
+    // Initialize variables
     int N = 10;
     double criterion = 100*tol;
+
+    // Refine N until error estimate is acceptably low
     while (criterion >= 15*tol) {
         criterion = std::abs((simpsons(a, (a+b)/2, N, params, f)+simpsons((a+b)/2, b, N, params, f)-simpsons(a, b, N, params, f)));
         N *= 2;
     }
 
+    // Compute final integral
     double integral = simpsons(a, b, N, params, f);
     return integral;
 }
