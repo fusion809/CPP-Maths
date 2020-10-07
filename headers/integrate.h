@@ -1,5 +1,7 @@
 #include <cmath>
 #include <vector>
+#include <iostream>
+using namespace std;
 
 // Use Chebyshev-Gauss quadrature
 /**
@@ -36,28 +38,24 @@ double chebGaussQuad(double a, double b, double N, std::vector<double> params, d
  * 
  * @param a        Start of the domain of integration.
  * @param b        End of the domain of integration.
- * @param N        Step number.
+ * @param N        Step number, must be odd.
  * @param params   A vector containing all parameters for function f.
  * @param f        A funcction of x and params. 
  * @return         The integral of f(x, param) from a to b.
  */
 double simpsons(double a, double b, int N, std::vector<double> params, double(*f)(double, std::vector<double>)) {
     // Step size
-    if (N % 2 == 1) {
-        return 0;
-    }
+    // if (N % 2 == 1) {
+    //     std::cout << "You tried to run simpsons on an even N.";
+    //     return 0;
+    // }
     double step = (b-a)/N;
     double grid = a;
     double integral = 0;
 
-    for (int i = 0; i <= N ; i++) {
-        if ( ( i == 0 ) || (i == N) ) {
-            integral += (step/3) * f(grid, params);
-        } else if ( (i - 1) % 2 == 0) {
-            integral += (2*step/3) * f(grid, params);
-        } else {
-            integral += (4*step/3) * f(grid, params);
-        }
+    // Add value to integral
+    for (int i = 0; i < N ; i++) {
+        integral += (step/6) * (f(grid, params) + 4* f(grid + step/2, params) + f(grid + step, params));
         grid += step;
     }
 
@@ -68,7 +66,7 @@ double adaptive_simpsons(double a, double b, double tol, std::vector<double> par
     int N = 10;
     double criterion = 100*tol;
     while (criterion >= 15*tol) {
-        criterion = std::abs((simpsons(a, (a+b)/2, N, params, f)+simpsons((a+b)/2, b, N, params, f)-simpsons(a, b, N, params, f))/simpsons(a, b, N, params, f));
+        criterion = std::abs((simpsons(a, (a+b)/2, N, params, f)+simpsons((a+b)/2, b, N, params, f)-simpsons(a, b, N, params, f)));
         N *= 2;
     }
 
