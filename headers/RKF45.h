@@ -73,7 +73,7 @@ vector<double> vecAbs(vector<double> vec) {
  * @param vec           Vector whose maximum value is being found.
  * @return              Maximum element of vec.
  */
-double matMax(vector<double> vec) {
+double vecMax(vector<double> vec) {
     double max = *std::max_element(vec.begin(), vec.end());
     return max;
 }
@@ -149,7 +149,7 @@ vector<double> params, double t0, double tf, vector<double> conds) {
         // dt to fix the error
         vector<double> Rvars = vecMult(vecAbs(vecAdd(
             {vars1, vecMult(vars2, -1.0)})), 1.0/dt);
-        double R = matMax(Rvars);
+        double R = vecMax(Rvars);
         double s = pow((epsilon/(2.0*R)), 0.25);
         if (R <= epsilon) {
             t.push_back(t[i]+dt);
