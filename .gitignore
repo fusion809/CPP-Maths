@@ -35,3 +35,4 @@ bin/
 .cproject
 *.png
 projects
+/.metadata/

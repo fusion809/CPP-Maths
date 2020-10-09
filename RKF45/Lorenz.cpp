@@ -8,9 +8,12 @@ namespace plt = matplotlibcpp;
 #include <fstream>
 // RKF45 function
 #include "RKF45.h"
+// Timer
+#include <chrono>
+using namespace std::chrono;
 
 /**
- * Find dt times the RHS of the ODE expressed as a system of first-order 
+ * Find dt times the RHS of the ODE expressed as a system of first-order
  * equations.
  *
  * @param params   A vector of parameters.
@@ -19,7 +22,7 @@ namespace plt = matplotlibcpp;
  * @param dt       Step size.
  * @return         vector of differentials
  */
-vector<double> Lorenz(vector<double> params, double t, vector<double> vars, 
+vector<double> Lorenz(vector<double> params, double t, vector<double> vars,
 double dt) {
     // Extract parameters
     double sigma = params[0];
@@ -39,7 +42,7 @@ double dt) {
 }
 
 /**
- * @brief Solves the problem and provides desired output, such as saved plots 
+ * @brief Solves the problem and provides desired output, such as saved plots
  * and data in a textfile.
  */
 int main() {
@@ -62,8 +65,12 @@ int main() {
     vector<double> params = {sigma, beta, rho};
 
     // Solve problem
+    auto start = high_resolution_clock::now(); 
     solClass solution = RKF45(Lorenz, dtInitial, epsilon, params, t0, tf, 
     conds);
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(stop - start);
+    cout << "RKF45 took " << duration.count() << " ms to run" << endl;
     vector<double> t = solution.t;
     int k = t.size();
     vector<vector<double>> vars = solution.vars;
