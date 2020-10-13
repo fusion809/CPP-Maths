@@ -33,10 +33,16 @@ double dt) {
     double theta = vars[2];
     double thetaDot = vars[3];
 
-    // Derivatives and return differentials
+    // Derivatives
     double xDDot = (l0+x)*pow(thetaDot, 2) - k*x/m + g * cos(theta);
     double thetaDDot = (-g/(l0+x))*sin(theta)-(2*xDot/(l0+x))*thetaDot;
-    return {dt*xDot, dt*xDDot, dt*thetaDot, dt*thetaDDot};
+
+    // Differentials
+    double dx = dt * xDot;
+    double dxDot = dt * xDDot;
+    double dTheta = dt * thetaDot;
+    double dThetaDot = dt * thetaDDot;
+    return {dx, dxDot, dTheta, dThetaDot};
 }
 
 /**
@@ -84,8 +90,8 @@ int main() {
     myfile << "i" << std::string(1 + (int)log10(K), ' ');
     myfile << "t" << std::string(19, ' ');
     myfile << "x" << std::string(17, ' ');
-    myfile << "xDot" << std::string(17, ' ');
-    myfile << "theta" << std::string(17, ' ');
+    myfile << "xDot" << std::string(16, ' ');
+    myfile << "theta" << std::string(13, ' ');
     myfile << "thetaDot" << "\n";
     // Contents
     for (int i = 0 ; i < K; i++) {

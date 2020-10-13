@@ -32,11 +32,16 @@ double dt) {
     double I = vars[1];
     double R = vars[2];
 
-    // Derivatives and return differentials
+    // Derivatives
     double dSdt = -beta*I*(1-delta)*S/N;
     double dIdt = beta*I*(1-delta)*S/N - gamma*I;
     double dRdt = gamma*I;
-    return {dSdt*dt, dIdt*dt, dRdt*dt};
+
+    // Differentials
+    double dS = dt * dSdt;
+    double dI = dt * dIdt;
+    double dR = dt * dRdt;
+    return {dS, dI, dR};
 }
 
 /**

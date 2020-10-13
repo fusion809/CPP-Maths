@@ -33,26 +33,32 @@ vector<double> vars, double dt) {
 
     // Extract variables from vars
     double theta1  = vars[0];
-    double ptheta1 = vars[1];
+    double pTheta1 = vars[1];
     double theta2  = vars[2];
-    double ptheta2 = vars[3];
+    double pTheta2 = vars[3];
 
     // Define variables used to simplify the ODE system
-    double C1 = ptheta1*ptheta2*sin(theta1-theta2)/(l1*l2*(m1+m2*
+    double C1 = pTheta1*pTheta2*sin(theta1-theta2)/(l1*l2*(m1+m2*
     (pow(sin(theta1-theta2), 2))));
-    double C2 = ((pow(l2,2))*m2*pow(ptheta1, 2) + (pow(l1, 2))*(m1+m2)*
-    pow(ptheta2, 2) - l1*l2*m2*ptheta1*ptheta2*cos(theta1-theta2))/
+    double C2 = ((pow(l2,2))*m2*pow(pTheta1, 2) + (pow(l1, 2))*(m1+m2)*
+    pow(pTheta2, 2) - l1*l2*m2*pTheta1*pTheta2*cos(theta1-theta2))/
     (2*(pow(l1,2))*(pow(l2,2))*(m1+m2*pow(sin(theta1-theta2), 2)))*
     sin(2*(theta1-theta2));
 
-    // Derivatives and return differentials
-    double thetaDot1 = (l2 * ptheta1 - l1*ptheta2 * cos(theta1))/((pow(l1, 2))*
+    // Derivatives
+    double thetaDot1 = (l2 * pTheta1 - l1*pTheta2 * cos(theta1))/((pow(l1, 2))*
     l2*(m1+m2*((pow(sin(theta1-theta2), 2)))));
-    double pthetaDot1 = -(m1+m2)*g*l1*sin(theta1) - C1 + C2;
-    double thetaDot2 = (l1*(m1+m2)*ptheta2-l2*m2*ptheta1*cos(theta1-theta2))/
+    double pThetaDot1 = -(m1+m2)*g*l1*sin(theta1) - C1 + C2;
+    double thetaDot2 = (l1*(m1+m2)*pTheta2-l2*m2*pTheta1*cos(theta1-theta2))/
     (l1*(pow(l2, 2))*m2*(m1+m2*(pow(sin(theta1-theta2), 2))));
-    double pthetaDot2 = -m2*g*l2*sin(theta2)+C1-C2;
-    return {dt*thetaDot1, dt*pthetaDot1, dt*thetaDot2, dt*pthetaDot2};
+    double pThetaDot2 = -m2*g*l2*sin(theta2)+C1-C2;
+
+    // Differentials and return them
+    double dTheta1 = dt * thetaDot1;
+    double dPTheta1 = dt * pThetaDot1;
+    double dTheta2 = dt * thetaDot2;
+    double dPTheta2 = dt * pThetaDot2;
+    return {dTheta1, dPTheta1, dTheta2, dPTheta2};
 }
 
 /**
@@ -62,10 +68,10 @@ vector<double> vars, double dt) {
 int main() {
     // Initial conditions and domain of integration
     double theta10 = M_PI/2;
-    double ptheta10 = 0;
+    double pTheta10 = 0;
     double theta20 = M_PI/2;
-    double ptheta20 = 0;
-    vector<double> conds = {theta10, ptheta10, theta20, ptheta20};
+    double pTheta20 = 0;
+    vector<double> conds = {theta10, pTheta10, theta20, pTheta20};
     double t0 = 0.0;
     double tf = 100.0;
 
@@ -94,9 +100,9 @@ int main() {
 
     // Extract solution values from vars
     vector<double> theta1 = vars[0];
-    vector<double> ptheta1 = vars[1];
+    vector<double> pTheta1 = vars[1];
     vector<double> theta2 = vars[2];
-    vector<double> ptheta2 = vars[3];
+    vector<double> pTheta2 = vars[3];
 
     // Initialize pendulum coordinates
     vector<double> x1(k, 0.0);
@@ -110,10 +116,10 @@ int main() {
     // Headings
     myfile << "i" << std::string(1 + (int)log10(k), ' ');
     myfile << "t" << std::string(19, ' ');
-    myfile << "theta1" << std::string(17, ' ');
-    myfile << "ptheta1" << std::string(17, ' ');
-    myfile << "theta2" << std::string(17, ' ');
-    myfile << "ptheta2" << "\n";
+    myfile << "theta1" << std::string(12, ' ');
+    myfile << "pTheta1" << std::string(12, ' ');
+    myfile << "theta2" << std::string(12, ' ');
+    myfile << "pTheta2" << "\n";
     // Contents
     for (int i = 0 ; i < k; i++) {
         // Spacing in file between columns
@@ -132,9 +138,9 @@ int main() {
         // Table entries in file
         myfile << setprecision(15) << t[i] << " ";
         myfile << setprecision(15) << theta1[i] << " ";
-        myfile << setprecision(15) << ptheta1[i] << " ";
+        myfile << setprecision(15) << pTheta1[i] << " ";
         myfile << setprecision(15) << theta2[i] << " ";
-        myfile << setprecision(15) << ptheta2[i] << "\n";
+        myfile << setprecision(15) << pTheta2[i] << "\n";
     }
 
     // Plot using matplotlibcpp
@@ -142,30 +148,30 @@ int main() {
     // matplotlibcpp package is installed and set up properly
     plt::figure(1);
     plt::plot(t, theta1, {{"label", "$\\theta_1$"}});
-    plt::plot(t, ptheta1, {{"label", "$p_{\\theta_1}$"}});
+    plt::plot(t, pTheta1, {{"label", "$p_{\\theta_1}$"}});
     plt::plot(t, theta2, {{"label", "$\\theta_2$"}});
-    plt::plot(t, ptheta2, {{"label", "$p_{\\theta_2}$"}});
+    plt::plot(t, pTheta2, {{"label", "$p_{\\theta_2}$"}});
     plt::xlabel("$t$");
     plt::legend();
     string fig1Title;
     fig1Title = "$\\theta_1$, $p_{\\theta_1}$, $\\theta_2$, and ";
     fig1Title += "$p_{\\theta_2}$ against time";
     plt::title(fig1Title);
-    string fig1Filename = "Double pendulum: theta1, ptheta1, theta2 and";
-    fig1Filename += "ptheta2 against time plot.svg";
+    string fig1Filename = "Double pendulum: theta1, pTheta1, theta2 and";
+    fig1Filename += "pTheta2 against time plot.svg";
     plt::save(fig1Filename);
     plt::figure(2);
-    plt::plot(theta1, ptheta1);
+    plt::plot(theta1, pTheta1);
     plt::xlabel("$\\theta_1$");
     plt::ylabel("$p_{\\theta_1}$");
     plt::title("Phase plot");
-    plt::save("Double pendulum: phase plot of ptheta1 against theta1.svg");
+    plt::save("Double pendulum: phase plot of pTheta1 against theta1.svg");
     plt::figure(3);
-    plt::plot(theta2, ptheta2);
+    plt::plot(theta2, pTheta2);
     plt::xlabel("$\\theta_2$");
     plt::ylabel("$p_{\\theta_2}$");
     plt::title("Phase plot");
-    plt::save("Double pendulum: phase plot of ptheta2 against theta2.svg");
+    plt::save("Double pendulum: phase plot of pTheta2 against theta2.svg");
     plt::figure(4);
     plt::plot(theta1, theta2);
     plt::xlabel("$\\theta_1$");

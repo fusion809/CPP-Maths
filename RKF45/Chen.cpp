@@ -31,11 +31,16 @@ double dt) {
     double y = vars[1];
     double z = vars[2];
 
-    // Derivatives and differentials
+    // Derivatives
     double dxdt = a*(y-x);
     double dydt = (c-a)*x-x*z+c*y;
     double dzdt = x*y-b*z;
-    return {dt*dxdt, dt*dydt, dt*dzdt};
+
+    // Differentials and return them
+    double dx = dt * dxdt;
+    double dy = dt * dydt;
+    double dz = dt * dzdt;
+    return {dx, dy, dz};
 }
 
 /**

@@ -26,7 +26,11 @@ double dt) {
     double theta = vars[0];
     double thetaDot = vars[1];
     double thetaDDot = -g/l * cos(theta);
-    return {dt*thetaDot, dt*thetaDDot};
+
+    // Differentials
+    double dTheta = dt * thetaDot;
+    double dThetaDot = dt * thetaDDot;
+    return {dTheta, dThetaDot};
 }
 
 /**

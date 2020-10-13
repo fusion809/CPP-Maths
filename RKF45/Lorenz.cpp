@@ -34,11 +34,16 @@ double dt) {
     double y = vars[1];
     double z = vars[2];
 
-    // Derivatives and return differentials
+    // Derivatives
     double dxdt = sigma*(y-x);
     double dydt = x*(rho-z) - y;
     double dzdt = x*y - beta*z;
-    return {dt*dxdt, dt*dydt, dt*dzdt};
+
+    // Differentials
+    double dx = dt * dxdt;
+    double dy = dt * dydt;
+    double dz = dt * dzdt;
+    return {dx, dy, dz};
 }
 
 /**
@@ -83,9 +88,9 @@ int main() {
     myfile.open("Lorenz.txt");
     // Headings
     myfile << "i" << std::string(1 + (int)log10(k), ' ');
-    myfile << "t" << std::string(19, ' ');
-    myfile << "x" << std::string(19, ' ');
-    myfile << "y" << std::string(19, ' ');
+    myfile << "t" << std::string(20, ' ');
+    myfile << "x" << std::string(17, ' ');
+    myfile << "y" << std::string(16, ' ');
     myfile << "z" << "\n";
     // Contents
     for (int i = 0 ; i < k; i++) {
