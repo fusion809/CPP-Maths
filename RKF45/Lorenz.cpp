@@ -114,6 +114,7 @@ int main() {
     plt::plot(t, x, {{"label", "$x$"}});
     plt::plot(t, y, {{"label", "$y$"}});
     plt::plot(t, z, {{"label", "$z$"}});
+    plt::xlabel("Time");
     plt::legend();
     plt::save("Lorenz x, y and z against t plot.svg");
     return 1;

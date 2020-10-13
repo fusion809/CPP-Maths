@@ -28,6 +28,11 @@ simplePendulum:
 	chmod +x simplePendulum.o
 	./simplePendulum.o
 
+SEIR:
+	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -I ../headers -o "SEIR.o" "SEIR.cpp"
+	chmod +x SEIR.o
+	./SEIR.o
+
 SIR:
 	/usr/bin/env g++ -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -I ../headers -o "SIR.o" "SIR.cpp"
 	chmod +x SIR.o
@@ -62,6 +67,11 @@ debug-simplePendulum:
 	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -I ../headers -o "simplePendulum.o" "simplePendulum.cpp"
 	chmod +x simplePendulum.o
 	gdb simplePendulum.o
+
+debug-SEIR:
+	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -I ../headers -o "SEIR.o" "SEIR.cpp"
+	chmod +x SEIR.o
+	gdb SEIR.o
 
 debug-SIR:
 	/usr/bin/env g++ -g -Wall -fPIC -I "/usr/include/python3.8" -I "/usr/include/python3.8/cpython" -I "/usr/lib/python3.8/site-packages/numpy/core/include" -lpython3.8 -I . -I ../headers -o "SIR.o" "SIR.cpp"
