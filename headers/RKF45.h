@@ -19,7 +19,7 @@ class solClass {
 };
 
 /**
- * Solve the problem using the Runge-Kutta-Fehlberg method of 4/5th order.
+ * Solve a system of ODEs using the Runge-Kutta-Fehlberg method of 4/5th order.
  *
  * @param f             Function that calculates the RHS of the problem 
  * expressed as a system. This solver assumes the system has been expressed 

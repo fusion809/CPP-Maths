@@ -56,7 +56,7 @@ int main() {
     double z0 = 1.0;
     vector<double> conds = {x0, y0, z0};
     double t0 = 0;
-    double tf = 60;
+    double tf = 200;
 
     // Problem parameters
     double sigma = 10.0;
