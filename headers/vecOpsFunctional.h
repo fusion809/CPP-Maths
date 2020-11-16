@@ -4,6 +4,23 @@
 #include <algorithm>
 using namespace std;
 
+std::vector<double> addVVec(const std::vector<std::vector<double>>& vvec)
+{
+
+    std::vector<double> result;
+    int N = vvec[0].size();
+    int M = vvec.size();
+    result.reserve(N);
+    std::transform(vvec[0].begin(), vvec[0].end(), vvec[1].begin(), std::back_inserter(result), std::plus<double>());
+
+    if (M > 3 ) {
+        for (int i = 2; i < M; i++) {
+            std::transform(result.begin(), result.end(), vvec[i].begin(), result, std::plus<double>());
+        }
+    }
+    return result;
+}
+
 /**
  * Find the absolute value of a specified vector
  * 
