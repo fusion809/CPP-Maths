@@ -44,6 +44,7 @@ vector<double> params, double t0, double tf, vector<double> conds) {
 
     // Initialize other variables
     int i = 0;
+    double s;
     double dt = dtInitial;
     solClass solution;
 
@@ -90,12 +91,22 @@ vector<double> params, double t0, double tf, vector<double> conds) {
         vector<double> Rvars = vecScalMult(vecAbs(vecAdd(
             {vars1, vecScalMult(vars2, -1.0)})), 1.0/dt);
         double R = vecMax(Rvars);
-        double s = pow((epsilon/(2.0*R)), 0.25);
+
+        // To handle possible division by zero
+        if (R != 0) {
+            s = pow((epsilon/(2.0*R)), 0.25);
+        } else {
+            s = 1.0;
+        }
+
+        // If R is below our error tolerance, continue on
         if (R <= epsilon) {
             t.push_back(t[i]+dt);
             vars.push_back(vars1);
             i++;
         }
+
+        // Adjust dt according to s
         dt *= s;
     }
 
